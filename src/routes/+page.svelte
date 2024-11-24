@@ -1,17 +1,19 @@
 <script lang="ts">
-	import Hero from '$lib/components/Hero.svelte';
-	import UpdateProfile from '$lib/components/UpdateProfile.svelte';
+    import { logger } from '$lib/logger';
+    import Hero from '$lib/components/Hero.svelte';
+    import UpdateProfile from '$lib/components/UpdateProfile.svelte';
 
-	export let data;
-	let avatar: string;
+    let { data } = $props();
 
-	// Reactive statement to update avatar when data changes
-	$: userProfile = data?.userProfile || '';
-	$: avatar = data?.user?.user_metadata?.avatar_url || '';
+    let userProfile = $state(data?.userProfile || '');
+    let avatar = $state(data?.user?.user_metadata?.avatar_url || '');
+
+    logger.trace('data : ', JSON.stringify(data));
+    logger.trace('userProfile : ', userProfile);
 </script>
 
 {#if data?.userProfile}
-	<UpdateProfile {userProfile} {avatar} />
+    <UpdateProfile {userProfile} {avatar} />
 {:else}
-	<Hero />
+    <Hero />
 {/if}
